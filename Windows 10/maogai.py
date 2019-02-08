@@ -27,12 +27,12 @@ def print_color_text(color, text):
 def transfer(content, answer, num, flag):
     wrong = []
     right = []
-    right_content = [0]
+    right_content = .group()
     wrong_content = [len(content)]
     ans_content = num
     ans_han = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
     exit_flag = False
-    while wrong_content[0] is not 0 and right_content[0] is not len(content):
+    while wrong_content.group() is not 0 and right_content.group() is not len(content):
         if exit_flag:
             break
         seed = random.randint(0, len(content)-1)  # 题目随机抽取
@@ -52,7 +52,7 @@ def transfer(content, answer, num, flag):
                     if exit_flag:
                         break
                     print(ii)
-                    if ii[0] is 'D':
+                    if ii.group() is 'D':
                         ans = input("请输入您的答案(输入Q退出): ")
                         if ans.upper() == 'Q':
                             if len(wrong) + len(right) == 0:
@@ -90,8 +90,8 @@ def transfer(content, answer, num, flag):
                                     wrong_content.remove(seed)
                                 right.append(seed)
                                 right_content.append(seed)
-                                right_content[0] += 1
-                                wrong_content[0] -= 1
+                                right_content.group() += 1
+                                wrong_content.group() -= 1
             else:
                 print(content[seed])
                 ans = input('请输入你的判断(正确输入T, 错误输入F, Q退出):')
@@ -123,8 +123,8 @@ def transfer(content, answer, num, flag):
                             wrong_content.remove(seed)
                         right.append(seed)
                         right_content.append(seed)
-                        right_content[0] += 1
-                        wrong_content[0] -= 1
+                        right_content.group() += 1
+                        wrong_content.group() -= 1
                     else:
                         if 'T' not in ans.upper() and 'F' not in ans.upper():
                             print_color_text(FOREGROUND_RED, '请认真答题, 答案只在T和F中! 如果不认真答题可能会影响你最终的成绩!')
