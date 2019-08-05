@@ -180,7 +180,7 @@ def login():
 
     data = {
         'email': mail,
-        'passwd': 'ssrxxjc.com',
+        'passwd': PASSWD,
         'code': ''
     }
 
