@@ -14,6 +14,8 @@ eml = ''
 # 注册密码
 PASSWD = 'ssrxxjc.com'
 
+DOMAIN = 'https://xxjc.xyz/'
+
 
 def get_cookies():
     '''获取cookies'''
@@ -60,14 +62,14 @@ def register():
     获取邮件内容
     注册ssr'''
     ss = requests.Session()
-    ck = ss.get('https://ssrxxjc.cc/').cookies
+    ck = ss.get(DOMAIN).cookies
     cookie = re.search('\s(.*=.*?)\s', str(ck)).group(1) + ';'
 
     # 给获取的邮箱发送验证码
-    url = 'https://ssrxxjc.cc/auth/send'
+    url = DOMAIN + 'auth/send'
     headers = {
-        'Origin': 'https://ssrxxjc.cc',
-        'Referer': 'https://ssrxxjc.cc/auth/register',
+        'Origin': DOMAIN,
+        'Referer': DOMAIN + 'auth/register',
         'cookie': cookie,
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36',
         'X-Requested-With': 'XMLHttpRequest',
@@ -80,7 +82,7 @@ def register():
     get_mail_notice()
 
     # 注册地址
-    register_url = 'https://ssrxxjc.cc/auth/register'
+    register_url = DOMAIN + 'auth/register'
 
     datas = {
         'email': mail,
@@ -154,7 +156,6 @@ def get_mail_text():
     # 提取验证码
     yzm = re.search('您的邮箱验证代码为.*(\d{6})', content)
     if yzm:
-        print('验证码内容为：' + yzm.group(1))
         return yzm.group(1)
     else:
         print('没有获取的验证码内容！请重新尝试！')
@@ -167,35 +168,52 @@ def login():
     '''
     print('登录中...')
     sss = requests.Session()
-    url = 'https://ssrxxjc.cc/auth/login'
+    url = DOMAIN + 'auth/login'
 
     headers = {
         'Accept': 'application/json, text/javascript, */*; q=0.01',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Origin': 'https://ssrxxjc.cc',
-        'Referer': 'https://ssrxxjc.cc/auth/login',
+        'Origin': DOMAIN,
+        'Referer': DOMAIN + 'auth/login',
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36',
         'X-Requested-With': 'XMLHttpRequest'
     }
 
     data = {
         'email': mail,
-        'passwd': 'ssrxxjc.com',
+        'passwd': PASSWD,
         'code': ''
     }
 
     header = {
-        'referer': 'https://ssrxxjc.cc/user/node',
+        'referer': DOMAIN+'user/node',
         'upgrade-insecure-requests': '1',
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36'
     }
 
     sss.post(url, headers=headers, data=data)
+    
+    # 签到领流量
+    checkin = DOMAIN + 'user/checkin'
+    checkined = sss.post(checkin, headers=headers).text
+    print(checkined)
+    
+    node = DOMAIN + 'user/node'
 
+    node_data = sss.get(node).text
+
+    soup = BeautifulSoup(node_data, 'lxml')
+
+    vip_node = soup.find('div', {'id': 'cardgroup1'})
+
+    node_nums = re.findall("urlChange\('(\d+)'", str(vip_node))
+    print(node_nums)
+    
     # 获取ssr数据和ssr链接
-    for i in range(45, 96):
-        ssr_url = 'https://ssrxxjc.cc/user/node/'+str(i)+'?ismu=80&relay_rule=0'
+    for i in node_nums:
+        ssr_url = DOMAIN + 'user/node/'+i+'?ismu=80&relay_rule=0'
         res = sss.get(ssr_url, headers=header).text
+
         soup = BeautifulSoup(res, 'lxml')
         ssr_data = soup.find('pre')
         if ssr_data:
