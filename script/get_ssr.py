@@ -14,7 +14,7 @@ eml = ''
 # 注册密码
 PASSWD = 'ssrxxjc.com'
 
-DOMAIN = 'https://xxjc.xyz/'
+DOMAIN = 'https://xxjc.pw/'
 
 
 def get_cookies():
@@ -192,6 +192,9 @@ def login():
     }
 
     sss.post(url, headers=headers, data=data)
+
+    res = sss.get('https://xxjc.pw/user').text
+    print(re.search('(https://xxjcdy.club/link/.*?)"', res).group(1))
     
     # 签到领流量
     checkin = DOMAIN + 'user/checkin'
@@ -207,7 +210,7 @@ def login():
     vip_node = soup.find('div', {'id': 'cardgroup1'})
 
     node_nums = re.findall("urlChange\('(\d+)'", str(vip_node))
-    print(node_nums)
+    # print(node_nums)
     
     # 获取ssr数据和ssr链接
     for i in node_nums:
