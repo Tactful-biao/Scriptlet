@@ -21,11 +21,12 @@ def get_cookies():
     '''获取cookies'''
     url = 'http://mail.bccto.me/'
     headers = {
-        'Referer': 'https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&ch=&tn=baidu&bar=&wd=%E5%8D%81%E5%88%86%E9%92%9F%E9%82%AE%E7%AE%B1&oq=%25E5%258D%2581%25E5%2588%2586%25E9%2592%259F%25E9%2582%25AE%25E7%25AE%25B1api&rsv_pq=a9c895ab000e997d&rsv_t=d6b9C6EGiyps9V%2Fb%2FFfnViyjmd4OQl4g8ACmiJug8S3E%2F6GRALCoj9rT0g8&rqlang=cn&rsv_enter=1&rsv_dl=tb&inputT=664',
+        'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
         'Host': 'mail.bccto.me',
         'Cache-Control': 'max-age=0',
         'Origin': 'http://mail.bccto.me',
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36',
+        'Pragma': 'no-cache',
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:69.0) Gecko/20100101 Firefox/69.0',
         'Upgrade-Insecure-Requests': '1'
     }
     s.get(url, headers=headers)
