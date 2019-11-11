@@ -11,9 +11,6 @@ mail = ''
 # 邮件内容地址加密串
 eml = ''
 
-# 注册密码
-PASSWD = 'ssrxxjc.com'
-
 DOMAIN = 'https://xxjc.pw/'
 
 
@@ -88,8 +85,8 @@ def register():
     datas = {
         'email': mail,
         'name': mail,
-        'passwd': PASSWD,
-        'repasswd': PASSWD,
+        'passwd': mail,
+        'repasswd': mail,
         'wechat': str(random.randrange(10000, 1000000000)),
         'imtype': '2',
         'code': '0',
@@ -182,7 +179,7 @@ def login():
 
     data = {
         'email': mail,
-        'passwd': PASSWD,
+        'passwd': mail,
         'code': ''
     }
 
@@ -194,37 +191,42 @@ def login():
 
     sss.post(url, headers=headers, data=data)
 
-    res = sss.get('https://xxjc.pw/user').text
-    print(re.search('(https://xxjcdy.club/link/.*?)"', res).group(1))
-    
-    # 签到领流量
-    checkin = DOMAIN + 'user/checkin'
-    checkined = sss.post(checkin, headers=headers).text
-    print(checkined)
-    
-    node = DOMAIN + 'user/node'
+    with open('/home/bao/mx.json', 'w', encoding='utf-8') as mx:
+        res = sss.get(DOMAIN + 'user').text
+        link = re.search('(https://xxjcdy.club/link/.*?)"', res).group(1)
+        print(link)
+        mx.write(mail + '\n' + link + '\n')
+        
+        # 签到领流量
+        checkin = DOMAIN + 'user/checkin'
+        checkined = sss.post(checkin, headers=headers).text
+        print(checkined)
+        
+        node = DOMAIN + 'user/node'
 
-    node_data = sss.get(node).text
+        node_data = sss.get(node).text
 
-    soup = BeautifulSoup(node_data, 'lxml')
+        soup = BeautifulSoup(node_data, 'lxml')
 
-    vip_node = soup.find('div', {'id': 'cardgroup1'})
+        vip_node = soup.find('div', {'id': 'cardgroup1'})
 
-    node_nums = re.findall("urlChange\('(\d+)'", str(vip_node))
-    # print(node_nums)
-    
-    # 获取ssr数据和ssr链接
-    for i in node_nums:
-        ssr_url = DOMAIN + 'user/node/'+i+'?ismu=80&relay_rule=0'
-        res = sss.get(ssr_url, headers=header).text
+        node_nums = re.findall("urlChange\('(\d+)'", str(vip_node))
+        # print(node_nums)
+        
+        # 获取ssr数据和ssr链接
+        for i in node_nums:
+            ssr_url = DOMAIN + 'user/node/'+i+'?ismu=80&relay_rule=0'
+            res = sss.get(ssr_url, headers=header).text
 
-        soup = BeautifulSoup(res, 'lxml')
-        ssr_data = soup.find('pre')
-        if ssr_data:
-            print(ssr_data.getText())
-            ssr_link = re.search("'(ssr:.*?)'", res).group(1)
-            print(ssr_link)
-            print('*'*30)
+            soup = BeautifulSoup(res, 'lxml')
+            ssr_data = soup.find('pre')
+            if ssr_data:
+                print(ssr_data.getText())
+                mx.write(ssr_data.getText() + '\n')
+                ssr_link = re.search("'(ssr:.*?)'", res).group(1)
+                print(ssr_link)
+                mx.write(ssr_link + '\n')
+                print('*'*30)
 
 
 if __name__ == '__main__':
