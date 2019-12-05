@@ -11,7 +11,7 @@ mail = ''
 # 邮件内容地址加密串
 eml = ''
 
-DOMAIN = 'https://xxjc.pw/'
+DOMAIN = 'https://xxjc.me/'
 
 
 def get_cookies():
