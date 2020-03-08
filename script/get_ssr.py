@@ -11,8 +11,9 @@ mail = ''
 # 邮件内容地址加密串
 eml = ''
 
-DOMAIN = 'https://xxjc.me/'
 
+DOMAIN = 'https://xxjc.fun/'
+#DOMAIN = 'https://xxjcdy.club/'
 
 def get_cookies():
     '''获取cookies'''
@@ -49,7 +50,7 @@ def get_mail_address():
     global mail
 
     # 随机取一个邮箱去注册
-    mail = str(random.randrange(1000000, 99999999999)) + random.choice(['@bccto.me', '@chaichuang.com', '@jnpayy.com', '@3202.com', '@eaek.cc', '@4057.com', '@huaweimali.cn', '@juyouxi.com', '@hotmali.cn', '@dawin.com', '@a7996.com'])
+    mail = str(random.randrange(1000000, 99999999999)) + random.choice(['@bccto.me', '@chaichuang.com', '@jnpayy.com', '@3202.com', '@yxpf.xyz', '@4533.top', '@ag163.top', '120mail.com', '@eaek.cc', '@4057.com', '@huaweimali.cn', '@juyouxi.com', '@hotmali.cn', '@dawin.com', '@a7996.com'])
     data = {'mail': mail}
     s.post(url, headers=headers, data=data)
     print('随机邮箱地址为: ' + mail)
