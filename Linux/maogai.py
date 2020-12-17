@@ -4,12 +4,12 @@ from timu import *
 def transfer(content, answer, num, flag):
     wrong = []
     right = []
-    right_content = .group()
+    right_content = [0]
     wrong_content = [len(content)]
     ans_content = num
     ans_han = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
     exit_flag = False
-    while wrong_content.group() is not 0 and right_content.group() is not len(content):
+    while wrong_content[0] != 0 and right_content[0] != len(content):
         if exit_flag:
             break
         seed = random.randint(0, len(content)-1)  # 题目随机抽取
@@ -24,12 +24,12 @@ def transfer(content, answer, num, flag):
             else:
                 pass
         else:
-            if flag is 'xuanze':
+            if flag == 'xuanze':
                 for ii in content[seed]:
                     if exit_flag:
                         break
                     print(ii)
-                    if ii.group() is 'D':
+                    if ii[0] == 'D':
                         ans = input("请输入您的答案(输入Q退出): ")
                         if ans.upper() == 'Q':
                             if len(wrong) + len(right) == 0:
@@ -67,8 +67,8 @@ def transfer(content, answer, num, flag):
                                     wrong_content.remove(seed)
                                 right.append(seed)
                                 right_content.append(seed)
-                                right_content.group() += 1
-                                wrong_content.group() -= 1
+                                right_content[0] += 1
+                                wrong_content[0] -= 1
             else:
                 print(content[seed])
                 ans = input('请输入你的判断(正确输入T, 错误输入F, Q退出):')
@@ -100,8 +100,8 @@ def transfer(content, answer, num, flag):
                             wrong_content.remove(seed)
                         right.append(seed)
                         right_content.append(seed)
-                        right_content.group() += 1
-                        wrong_content.group() -= 1
+                        right_content[0] += 1
+                        wrong_content[0] -= 1
                     else:
                         if 'T' not in ans.upper() and 'F' not in ans.upper():
                             print('请认真答题, 答案只在T和F中! 如果不认真答题可能会影响你最终的成绩!')
@@ -115,13 +115,13 @@ if __name__ == '__main__':
     print('\t\t\t*2.多选题')
     print('\t\t\t*3.判断题')
     a = input('\t请选择题目类型:')
-    if a is '1':
+    if a == '1':
         num = [0, 50, 70, 80, 90, 110, 135, 145, 175, 195, 205, 215]
         transfer(content, ans, num, flag='xuanze')
-    elif a is '2':
+    elif a == '2':
         num_2 = [0, 8, 10, 12, 14, 19, 24, 28, 36, 39, 42, 44]
         transfer(duo_content, duo_ans, num_2, flag='xuanze')
-    elif a is '3':
+    elif a == '3':
         num_3 = [0, 15, 20, 25, 30, 40, 50, 60, 80, 85, 90, 95]
         transfer(pan_content, pan_ans, num_3, flag='panduan')
     else:
