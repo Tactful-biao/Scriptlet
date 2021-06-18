@@ -40,3 +40,8 @@
   - 使用方法: python3 iphone12.py
   - 运行效果: 每10s去苹果官网查询一下我关注的某配置下的ipone12 是否有货，如果有货就给我发邮件。
   - 用途: 第一时间获取iphone的库存动态
+
++ book.index
+  - 一个获取电子书的前端网页
+  -- 讲解: [地址](https://zhuanlan.zhihu.com/p/381025985)
+  - 详见: [地址](https//github.com/Simper-coder/js/tree/gh-pages/book)

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>电子书查询、下载</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css"  media="all">
+</head>
+<body>
+    <div class="container">
+        <div class="alert alert-danger">
+            本页面仅供学习交流，严禁用于任何商业用途。本界面的所有数据均采集自网络，非本人存储。如果有侵犯了您合法权益的地方，请与sfy0822@mail.ustc.edu.cn联系！
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="search" placeholder="搜索" onchange="">
+        </div>
+        <div id="res"></div>
+        <div id="demo"></div>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.layuicdn.com/layui/layui.js" charset="utf-8"></script>
+    <script>
+        var keyword = '';
+        layui.use(['laypage', 'layer'], function(){
+             var laypage = layui.laypage
+                ,layer = layui.layer;
+
+             $("#search").on("input", delay(function (){
+                var currentPage = 1;
+                keyword = $(this).val();
+                $(".page-item").remove();
+				if(keyword.trim()!=='')
+					var total = getData(keyword, currentPage);
+				 else{
+                    $(".table").remove();
+                    $("#res").append('');
+				 }
+
+                laypage.render({
+                    elem: 'demo',
+                    count: total,
+                    layout:['count', 'prev', 'page', 'next'],
+                    theme: '#1E9FFF',
+                    jump: function (obj,first){
+                        currentPage = obj.curr;
+                        if(!first) {
+                            getData(keyword, currentPage)
+                        }
+                     }
+                 });
+            } , 500));
+        });
+
+        function getData(keyword, currentPage=1){
+            //在输入框中打印输入的值
+            $(".table").remove();
+            var totalPage = 0
+
+            $.ajax({
+                url: 'https://api.yuedu.pro/book/_search?keyword='+keyword+'&pn='+currentPage+'&ps=10',
+                dataType: 'json',
+                type: 'get',
+                async:false,
+                success: function (data){
+                    var str = '<table class="table table-hover"><thead><tr><th scope="col">#</th><th scope="col">名称</th><th scope="col">大小</th><th scope="col">上传时间</th><th scope="col">下载</th></tr></thead><tbody>';
+                    $.each(data['data']['list'], function (i, n){
+                        str += '<tr><th scope="row">'+(i+1)+'</th>'
+                        str += '<td>'+n.title+'</td>';
+                        str += '<td>' + n.size.toFixed(2) + ' MB' + "</td>";
+                        str += '<td>' + n.add_time.substring(0,10) + "</td>";
+                        str += '<td><a href="'+n.file_url+'" class="btn btn-outline-success" download="'+n.title+'">下载</a></td></tr>'
+                    });
+                    str += '</tbody></table>'
+                    $("#res").append(str);
+                    var allData = data['data']['total']
+                    if (allData !== 0){
+                        totalPage = allData;
+                    }
+                }
+            })
+            return totalPage
+        }
+
+        function delay(callback, ms) {
+            var timer = 0;
+            return function() {
+                var context = this, args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                  callback.apply(context, args);
+                }, ms || 0);
+            };
+        }
+    </script>
+</body>
+</html>
